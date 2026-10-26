@@ -50,13 +50,31 @@ export const IntelligenceModule: React.FC = () => {
       return results
     }
 
-    // Análise de fluxo de caixa
+    // Análise de fluxo projetado vs efetivado
+    const flow = financeStore.getFlowComparison(start, end)
+    if (flow.pendingExpense > 0) {
+      results.push({
+        type: 'info',
+        title: 'Despesas Projetadas a Quitar',
+        description: `Existem ${formatCurrency(flow.pendingExpense, currency)} em despesas pendentes para este mês (${flow.expenseExecutionRate.toFixed(0)}% já efetivado). Saldo projetado após liquidação: ${formatCurrency(flow.projectedNet, currency)}.`,
+        action: 'Acompanhe as datas de vencimento no módulo de Caixa para confirmar a efetivação',
+      })
+    }
+
+    // Análise de fluxo de caixa efetivado
     if (monthlyIncome > 0 && monthlyExpense > monthlyIncome) {
       results.push({
         type: 'warning',
-        title: 'Déficit no Mês Atual',
-        description: `Suas despesas (${formatCurrency(monthlyExpense, currency)}) superam suas receitas (${formatCurrency(monthlyIncome, currency)}) em ${formatCurrency(monthlyExpense - monthlyIncome, currency)}.`,
+        title: 'Déficit Efetivado no Mês Atual',
+        description: `Suas despesas efetivadas (${formatCurrency(monthlyExpense, currency)}) superam suas receitas recebidas (${formatCurrency(monthlyIncome, currency)}) em ${formatCurrency(monthlyExpense - monthlyIncome, currency)}.`,
         action: 'Avalie cortar despesas variáveis para reequilibrar o fluxo de caixa',
+      })
+    } else if (flow.projectedExpense > flow.projectedIncome && flow.projectedIncome > 0) {
+      results.push({
+        type: 'warning',
+        title: 'Alerta de Projeção Negativa',
+        description: `O fluxo total projetado para este mês aponta déficit de ${formatCurrency(flow.projectedExpense - flow.projectedIncome, currency)} se todas as despesas previstas forem confirmadas.`,
+        action: 'Provisione recursos extras ou adie despesas não urgentes',
       })
     }
 

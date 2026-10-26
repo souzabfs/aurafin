@@ -280,7 +280,7 @@ function HomePage({ onNavigate }: { onNavigate: (tab: TabType) => void }) {
             <ArrowRight size={18} className="text-gray-400 group-hover:translate-x-1 transition-transform" />
           </h3>
           <p className="text-sm text-gray-600 dark:text-slate-400 mb-4">
-            Registre entradas e despesas com categorização, gráficos circulares e saldo em tempo real.
+            Lançamentos recorrentes, confirmação de efetivação e comparativo em tempo real entre fluxo projetado vs efetivado.
           </p>
           <div className="pt-3 border-t border-gray-100 dark:border-slate-800 flex items-center justify-between text-xs">
             <span className="text-gray-500 dark:text-slate-400">Saldo Atual:</span>
