@@ -235,8 +235,8 @@ export const useFinanceStore = create<FinanceStore>()(
         })
       },
 
-      // Por padrão onlyCompleted = true para contabilizar apenas despesas/entradas efetivadas!
-      getTotalIncome: (startDate, endDate, onlyCompleted = true) => {
+      // Por padrão calcula todos os lançamentos salvos no sistema
+      getTotalIncome: (startDate, endDate, onlyCompleted = false) => {
         const { transactions } = get()
         return transactions
           .filter((t) => {
@@ -249,7 +249,7 @@ export const useFinanceStore = create<FinanceStore>()(
           .reduce((sum, t) => sum + (Number(t.amount) || 0), 0)
       },
 
-      getTotalExpense: (startDate, endDate, onlyCompleted = true) => {
+      getTotalExpense: (startDate, endDate, onlyCompleted = false) => {
         const { transactions } = get()
         return transactions
           .filter((t) => {
@@ -262,8 +262,8 @@ export const useFinanceStore = create<FinanceStore>()(
           .reduce((sum, t) => sum + (Number(t.amount) || 0), 0)
       },
 
-      // Saldo contabilizado: apenas despesas e receitas efetivadas por padrão
-      getBalance: (onlyCompleted = true) => {
+      // Saldo geral: calcula todos os lançamentos cadastrados por padrão
+      getBalance: (onlyCompleted = false) => {
         const { transactions, accounts } = get()
         const initialAccountBalance = accounts.reduce((sum, a) => sum + (Number(a.balance) || 0), 0)
         const netTransactions = transactions.reduce((sum, t) => {
@@ -328,7 +328,7 @@ export const useFinanceStore = create<FinanceStore>()(
         }
       },
 
-      getTransactionsByCategory: (category, onlyCompleted = true) => {
+      getTransactionsByCategory: (category, onlyCompleted = false) => {
         const { transactions } = get()
         return transactions.filter((t) => {
           if (t.category !== category) return false

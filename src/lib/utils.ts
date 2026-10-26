@@ -12,6 +12,27 @@ export const formatCurrency = (
   }).format(safeValue)
 }
 
+export const parseCurrencyInput = (input: string | number | undefined | null): number => {
+  if (input === undefined || input === null) return 0
+  if (typeof input === 'number') return isNaN(input) ? 0 : input
+
+  let str = input.toString().replace(/[R$\s]/g, '').trim()
+  if (!str) return 0
+
+  if (str.includes(',') && str.includes('.')) {
+    if (str.lastIndexOf(',') > str.lastIndexOf('.')) {
+      str = str.replace(/\./g, '').replace(',', '.')
+    } else {
+      str = str.replace(/,/g, '')
+    }
+  } else if (str.includes(',')) {
+    str = str.replace(',', '.')
+  }
+
+  const num = parseFloat(str)
+  return isNaN(num) || !isFinite(num) ? 0 : num
+}
+
 export const formatDate = (date: string | Date | undefined | null): string => {
   if (!date) return '-'
   try {
