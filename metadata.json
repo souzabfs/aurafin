@@ -1,0 +1,6 @@
+{
+  "name": "AuraFin",
+  "description": "Controle financeiro pessoal, gestão de fluxo de caixa, análise de holerite CLT/CREA e inteligência financeira com modo noturno.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
